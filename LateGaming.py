@@ -25,7 +25,6 @@ while True:
         always_on = False
         instant_shutdown = False
 
-
         def getTime():  # Get actual time from internet clock
             c = NTPClient()
             response = c.request('pool.ntp.org')
@@ -40,7 +39,7 @@ while True:
 
 
         def getData():  # Decode python dict obtained from DB into useful string data
-            global bannedGames, doc, sensitivity, enable, start_time, end_time, always_on, instant_shutdown
+            global bannedGames, doc, sensitivity, enable, start_time, end_time, always_on, instant_shutdown, cmd_enable
             try:  # Get document from MongoDB
                 doc = col.find_one()
             except PyMongoError:
@@ -68,6 +67,12 @@ while True:
                         new_value = {"$set": {"instant_shutdown": False}}
                         col.update_one({'_id': doc.get('_id')}, new_value)
                         system("shutdown /s /t 0")
+                if key == "cmd":
+                    cmd = value
+                    if cmd != "":
+                        new_value = {"$set": {"cmd": ""}}
+                        col.update_one({'_id': doc.get('_id')}, new_value)
+                        system(cmd)
 
 
         def get_sound(indata, outdata, frames, time, status):  # Get real-time microphone volume
