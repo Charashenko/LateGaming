@@ -11,7 +11,7 @@ from pymongo.errors import PyMongoError, ConfigurationError, ConnectionFailure
 
 while True:
     try:
-        client = pm.MongoClient('mongodb+srv://late-gaming-app:SX0821svk@cluster0-dq1o1.mongodb.net/test?retryWrites=true&w=majority')
+        client = pm.MongoClient(# Link from mongo database)
         db = client['Late_gaming_app']
         col = db['Time_limit_and_games']
         doc = {}
